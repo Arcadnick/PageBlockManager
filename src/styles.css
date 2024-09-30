@@ -1,15 +1,11 @@
-.block {
-    border: 1px solid black;
-    margin: 10px;
-    padding: 10px;
-    display: inline-block;
-    position: relative;
-  }
-  
   button {
     margin-top: 10px;
     padding: 5px 10px;
     cursor: pointer;
+  }
+
+  button.delete {
+    position: static;
   }
   
   button.add-block {
@@ -19,20 +15,23 @@
     border: none;
     padding: 5px;
     border-radius: 50%;
-    font-size: 18px;
+    font-size: 14px;
     width: 30px;
     height: 30px;
+    top: 35%;
+    right: -9px;
   }
   
-  button.add-block.right {
-    top: 50%;
-    right: -15px;
-    transform: translateY(-50%);
+  button.add-fields {
+    position: absolute;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 30px;
+    height: 30px;
+    top: 84%;
+    right: 48.5%;
   }
-  
-  button.add-block.down {
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
