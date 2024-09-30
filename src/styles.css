@@ -1,0 +1,38 @@
+.block {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    position: relative;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  button.add-block {
+    position: absolute;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+  }
+  
+  button.add-block.right {
+    top: 50%;
+    right: -15px;
+    transform: translateY(-50%);
+  }
+  
+  button.add-block.down {
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
