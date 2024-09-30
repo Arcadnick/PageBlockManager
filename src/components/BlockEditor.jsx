@@ -1,63 +1,52 @@
 import React, { useState } from 'react';
-import Block from './Block';
+import BlockField from './BlockField';
 
 const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
-  const [grid, setGrid] = useState([[{ id: Date.now(), content: '' }]]);
+  const [fields, setFields] = useState([[{ id: Date.now(), content: '' }]]);
 
-  const addBlock = (position, rowIndex, colIndex) => {
-    const newBlock = { id: Date.now(), content: '' };
-
-    const updatedGrid = [...grid];
-    
-    if (position === 'right') {
-      if (updatedGrid[rowIndex].length < MAX_BLOCKS_IN_ROW) {
-        updatedGrid[rowIndex].splice(colIndex + 1, 0, newBlock);
-      }
-    } else if (position === 'down') {
-      updatedGrid.splice(rowIndex + 1, 0, [newBlock]);
+  const addBlockToField = (rowIndex) => {
+    const updatedFields = [...fields];
+    const row = updatedFields[rowIndex];
+    if (row.length < MAX_BLOCKS_IN_ROW) {
+      row.push({ id: Date.now(), content: '' });
+      setFields(updatedFields);
     }
-
-    setGrid(updatedGrid);
   };
 
-  const removeBlock = (rowIndex, colIndex) => {
-    const updatedGrid = [...grid];
-    updatedGrid[rowIndex].splice(colIndex, 1);
-    if (updatedGrid[rowIndex].length === 0) {
-      updatedGrid.splice(rowIndex, 1); 
-    }
-    setGrid(updatedGrid);
+  const addFieldBelow = () => {
+    setFields([...fields, [{ id: Date.now(), content: '' }]]);
   };
 
-  const updateBlockContent = (rowIndex, colIndex, content) => {
-    const updatedGrid = grid.map((row, rIdx) => 
-      rIdx === rowIndex 
-        ? row.map((block, cIdx) => cIdx === colIndex ? { ...block, content } : block)
-        : row
+  const updateBlockContent = (rowIndex, blockIndex, content) => {
+    const updatedFields = fields.map((field, rIdx) =>
+      rIdx === rowIndex
+        ? field.map((block, bIdx) => (bIdx === blockIndex ? { ...block, content } : block))
+        : field
     );
-    setGrid(updatedGrid);
+    setFields(updatedFields);
+  };
+
+  const removeBlock = (rowIndex, blockIndex) => {
+    const updatedFields = fields.map((field, rIdx) =>
+      rIdx === rowIndex ? field.filter((_, bIdx) => bIdx !== blockIndex) : field
+    ).filter(field => field.length > 0);
+    setFields(updatedFields);
   };
 
   return (
     <div>
-      {grid.map((row, rowIndex) => (
-        <div key={rowIndex} style={{ display: 'flex' }}>
-          {row.map((block, colIndex) => (
-            <Block
-              key={block.id}
-              id={block.id}
-              content={block.content}
-              onContentChange={(content) => updateBlockContent(rowIndex, colIndex, content)}
-              onRemove={() => removeBlock(rowIndex, colIndex)}
-              onAddBlock={addBlock}
-              rowIndex={rowIndex}
-              colIndex={colIndex}
-              canAddRight={row.length < MAX_BLOCKS_IN_ROW} 
-            />
-          ))}
-        </div>
+      {fields.map((field, rowIndex) => (
+        <BlockField
+          key={rowIndex}
+          blocks={field}
+          onAddBlock={() => addBlockToField(rowIndex)}
+          onAddField={addFieldBelow}
+          onUpdateBlock={(blockIndex, content) => updateBlockContent(rowIndex, blockIndex, content)}
+          onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
+          canAddRight={field.length < MAX_BLOCKS_IN_ROW} 
+        />
       ))}
     </div>
   );
