@@ -45,7 +45,7 @@ const BlockEditor = () => {
           onAddField={addFieldBelow}
           onUpdateBlock={(blockIndex, content) => updateBlockContent(rowIndex, blockIndex, content)}
           onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
-          canAddRight={field.length < MAX_BLOCKS_IN_ROW} // Проверка, можно ли добавить блок справа
+          canAddRight={field.length < MAX_BLOCKS_IN_ROW} 
         />
       ))}
     </div>
