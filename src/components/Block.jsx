@@ -27,17 +27,29 @@ const Block = ({ id, content, onContentChange, onRemove, moveBlock, rowIndex, bl
 
   return (
     <div
-      ref={(node) => dragRef(dropRef(node))} 
+      ref={dropRef} 
       style={{
         flex: 1,
-        border: isOver && canDrop ? '2px dashed green' : '1px solid black', 
+        border: isOver && canDrop ? '2px dashed green' : '1px solid black',
         margin: '5px',
         padding: '10px',
         boxSizing: 'border-box',
-        cursor: 'move',
-        opacity: isDragging ? 0.5 : 1, 
+        opacity: isDragging ? 0.5 : 1,
       }}
     >
+      <div
+        ref={dragRef} 
+        style={{
+          backgroundColor: '#f0f0f0',
+          padding: '5px',
+          cursor: 'move',
+          borderBottom: '1px solid black',
+          textAlign: 'center',
+        }}
+      >
+        Move Block
+      </div>
+      
       <textarea
         value={content}
         onChange={(e) => onContentChange(e.target.value)}
