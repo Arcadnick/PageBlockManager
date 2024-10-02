@@ -15,9 +15,11 @@ const BlockEditor = () => {
     }
   };
 
-  const addFieldBelow = () => {
-    setFields([...fields, [{ id: Date.now(), content: '' }]]);
-  };
+  const addFieldBelow = (rowIndex) => {
+    const updatedFields = [...fields];
+    updatedFields.splice(rowIndex + 1, 0, [{ id: Date.now(), content: '' }]);
+    setFields(updatedFields);
+  };  
 
   const updateBlockContent = (rowIndex, blockIndex, content) => {
     const updatedFields = fields.map((field, rIdx) =>
@@ -43,7 +45,7 @@ const BlockEditor = () => {
           key={rowIndex}
           blocks={field}
           onAddBlock={() => addBlockToField(rowIndex)}
-          onAddField={addFieldBelow}
+          onAddField={() => addFieldBelow(rowIndex)}
           onUpdateBlock={(blockIndex, content) => updateBlockContent(rowIndex, blockIndex, content)}
           onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
           canAddRight={field.length < MAX_BLOCKS_IN_ROW} 
