@@ -14,13 +14,13 @@ const BlockField = ({ blocks, onAddBlock, onAddField, onUpdateBlock, onRemoveBlo
             />
             ))}
             {canAddRight && (
-                <button class='add-block' onClick={onAddBlock}>
+                <button className='add-block' onClick={onAddBlock}>
                     +
                 </button>
             )}
         </div>
 
-        <button class='add-fields' onClick={onAddField}>
+        <button className='add-fields' onClick={onAddField}>
             +
         </button>
     </div>

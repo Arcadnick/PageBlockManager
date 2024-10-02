@@ -9,7 +9,7 @@ const Block = ({ content, onContentChange, onRemove }) => {
         placeholder="text"
         style={{ width: '98%', height: '100px' }}
       />
-      <button class='delete' onClick={onRemove}>
+      <button className='delete' onClick={onRemove}>
         Del
       </button>
     </div>

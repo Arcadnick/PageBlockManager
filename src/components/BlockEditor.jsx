@@ -30,10 +30,11 @@ const BlockEditor = () => {
 
   const removeBlock = (rowIndex, blockIndex) => {
     const updatedFields = fields.map((field, rIdx) =>
-      rIdx === rowIndex ? field.filter((_, bIdx) => bIdx !== blockIndex) : field
-    ).filter(field => field.length > 0);
+        rIdx === rowIndex ? field.filter((_, bIdx) => bIdx !== blockIndex) : field
+      ).filter(field => field.length > 0); 
     setFields(updatedFields);
   };
+  
 
   return (
     <div>
