@@ -68,6 +68,7 @@ const BlockEditor = () => {
           onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
           canAddRight={field.length < MAX_BLOCKS_IN_ROW} 
           moveBlock={moveBlock} 
+          rowIndex={rowIndex}
         />
       ))}
     </div>

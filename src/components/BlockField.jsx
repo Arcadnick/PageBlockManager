@@ -1,7 +1,7 @@
 import React from 'react';
 import Block from './Block';
 
-const BlockField = ({ blocks, onAddBlock, onAddField, onUpdateBlock, onRemoveBlock, canAddRight, moveBlock }) => {
+const BlockField = ({ blocks, onAddBlock, onAddField, onUpdateBlock, onRemoveBlock, canAddRight, moveBlock, rowIndex }) => {
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
       <div style={{ display: 'flex', width: '100%' }}>
@@ -13,7 +13,7 @@ const BlockField = ({ blocks, onAddBlock, onAddField, onUpdateBlock, onRemoveBlo
             onContentChange={(content) => onUpdateBlock(blockIndex, content)}
             onRemove={() => onRemoveBlock(blockIndex)}
             moveBlock={moveBlock}
-            rowIndex={blocks.rowIndex}
+            rowIndex={rowIndex}
             blockIndex={blockIndex}
           />
         ))}
