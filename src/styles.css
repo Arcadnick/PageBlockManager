@@ -28,7 +28,7 @@
     font-size: 14px;
     width: 30px;
     height: 30px;
-    top: 84%;
+    top: 78%;
     right: 48.5%;
   }
 
@@ -64,13 +64,15 @@
   
   .delete {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
+    top: -7px;
+    right: 3px;
     background-color: red;
     color: white;
     border: none;
     padding: 5px;
     cursor: pointer;
+    height: 15px;
+    padding-top: revert-layer;
   }
   
   .dragging {

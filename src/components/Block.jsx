@@ -38,7 +38,7 @@ const Block = ({ id, blockIndex, onRemove, moveBlock, rowIndex }) => {
       </div>
 
       <button className="delete" onClick={onRemove}>
-        Del
+      ×
       </button>
     </div>
   );
