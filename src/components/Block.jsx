@@ -1,16 +1,44 @@
 import React from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
-const Block = ({ content, onContentChange, onRemove }) => {
+const Block = ({ id, blockIndex, onRemove, moveBlock, rowIndex }) => {
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'block',
+    item: { id, rowIndex, blockIndex },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [{ isOver, canDrop }, dropRef] = useDrop({
+    accept: 'block',
+    hover: (item) => {
+      if (item.rowIndex !== rowIndex || item.blockIndex !== blockIndex) {
+        moveBlock(item.rowIndex, item.blockIndex, rowIndex, blockIndex);
+        item.rowIndex = rowIndex;
+        item.blockIndex = blockIndex;
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
   return (
-    <div style={{ flex: 1, border: '1px solid black', margin: '5px', padding: '10px', boxSizing: 'border-box' }}>
-      <textarea
-        value={content}
-        onChange={(e) => onContentChange(e.target.value)}
-        placeholder="text"
-        style={{ width: '98%', height: '100px' }}
-      />
-      <button className='delete' onClick={onRemove}>
-        Del
+    <div
+      ref={dropRef}
+      className={`block-container ${isDragging ? 'dragging' : ''} ${isOver && canDrop ? 'hovered' : ''}`}
+    >
+      <div ref={dragRef} className="block-header">
+      </div>
+      
+      <div className="block-content">
+        <span className="block-number">{blockIndex + 1}</span> 
+      </div>
+
+      <button className="delete" onClick={onRemove}>
+      ×
       </button>
     </div>
   );
