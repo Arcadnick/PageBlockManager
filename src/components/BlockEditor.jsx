@@ -1,25 +1,28 @@
 import { DndProvider } from 'react-dnd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import BlockField from './BlockField';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { v4 as uuidv4 } from 'uuid';
 
 const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
-  const [fields, setFields] = useState([[{ id: Date.now(), content: '' }]]);
+  const [fields, setFields] = useState([[{ id: uuidv4(), number: 1, content: '' }]]);
+  const blockCounter = useRef(2); 
 
   const addBlockToField = (rowIndex) => {
     const updatedFields = [...fields];
     const row = updatedFields[rowIndex];
     if (row.length < MAX_BLOCKS_IN_ROW) {
-      row.push({ id: Date.now(), content: '' });
+      const newBlockNumber = blockCounter.current++; 
+      row.push({ id: uuidv4(), number: newBlockNumber, content: '' });
       setFields(updatedFields);
     }
   };
 
   const addFieldBelow = (rowIndex) => {
     const updatedFields = [...fields];
-    updatedFields.splice(rowIndex + 1, 0, [{ id: Date.now(), content: '' }]);
+    updatedFields.splice(rowIndex + 1, 0, [{ id: uuidv4(), number: blockCounter.current++, content: '' }]);
     setFields(updatedFields);
   };
 
@@ -48,7 +51,7 @@ const BlockEditor = () => {
     setFields(updatedFields);
   };
 
-  const allBlocks = fields.flat(); 
+  const allBlocks = fields.flat();
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -62,7 +65,8 @@ const BlockEditor = () => {
             onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
             canAddRight={field.length < MAX_BLOCKS_IN_ROW}
             moveBlock={moveBlock}
-            allBlocks={allBlocks} 
+            allBlocks={allBlocks}
+            rowIndex={rowIndex} 
           />
         ))}
       </div>

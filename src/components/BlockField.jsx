@@ -8,22 +8,21 @@ const BlockField = ({
   onRemoveBlock,
   canAddRight,
   moveBlock,
-  allBlocks, 
+  rowIndex
 }) => {
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
       <div style={{ display: 'flex', width: '100%' }}>
         {blocks.map((block, blockIndex) => {
-          const globalBlockIndex = allBlocks.indexOf(block);
-          
           return (
             <Block
               key={block.id}
               id={block.id}
-              blockIndex={globalBlockIndex} 
+              blockIndex={blockIndex} 
+              blockNumber={block.number} 
+              rowIndex={rowIndex} 
               onRemove={() => onRemoveBlock(blockIndex)}
               moveBlock={moveBlock}
-              rowIndex={blocks.rowIndex}
             />
           );
         })}
