@@ -12,11 +12,9 @@ const Block = ({ id, blockIndex, onRemove, moveBlock, rowIndex }) => {
 
   const [{ isOver, canDrop }, dropRef] = useDrop({
     accept: 'block',
-    hover: (item) => {
+    drop: (item) => {
       if (item.rowIndex !== rowIndex || item.blockIndex !== blockIndex) {
         moveBlock(item.rowIndex, item.blockIndex, rowIndex, blockIndex);
-        item.rowIndex = rowIndex;
-        item.blockIndex = blockIndex;
       }
     },
     collect: (monitor) => ({
@@ -38,10 +36,9 @@ const Block = ({ id, blockIndex, onRemove, moveBlock, rowIndex }) => {
       </div>
 
       <button className="delete" onClick={onRemove}>
-      ×
+        ×
       </button>
     </div>
   );
 };
-
 export default Block;

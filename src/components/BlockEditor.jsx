@@ -23,15 +23,6 @@ const BlockEditor = () => {
     setFields(updatedFields);
   };
 
-  // const updateBlockContent = (rowIndex, blockIndex, content) => {
-  //   const updatedFields = fields.map((field, rIdx) =>
-  //     rIdx === rowIndex
-  //       ? field.map((block, bIdx) => (bIdx === blockIndex ? { ...block, content } : block))
-  //       : field
-  //   );
-  //   setFields(updatedFields);
-  // };
-
   const removeBlock = (rowIndex, blockIndex) => {
     const updatedFields = fields
       .map((field, rIdx) =>
@@ -68,7 +59,6 @@ const BlockEditor = () => {
             blocks={field}
             onAddBlock={() => addBlockToField(rowIndex)}
             onAddField={() => addFieldBelow(rowIndex)}
-            //onUpdateBlock={(blockIndex, content) => updateBlockContent(rowIndex, blockIndex, content)}
             onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
             canAddRight={field.length < MAX_BLOCKS_IN_ROW}
             moveBlock={moveBlock}
@@ -79,5 +69,4 @@ const BlockEditor = () => {
     </DndProvider>
   );
 };
-
 export default BlockEditor;
