@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex }) => {
+const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks, MAX_BLOCKS_IN_ROW }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: 'block',
     item: { id, rowIndex, blockIndex },
@@ -12,14 +12,18 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex }) =
 
   const [{ isOver, canDrop }, dropRef] = useDrop({
     accept: 'block',
-    drop: (item) => {
+    hover: (item) => {
+      if (blocks.length >= MAX_BLOCKS_IN_ROW) return;
+
       if (item.rowIndex !== rowIndex || item.blockIndex !== blockIndex) {
         moveBlock(item.rowIndex, item.blockIndex, rowIndex, blockIndex);
+        item.rowIndex = rowIndex;
+        item.blockIndex = blockIndex;
       }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+      canDrop: monitor.canDrop() && blocks.length < MAX_BLOCKS_IN_ROW,
     }),
   });
 
@@ -33,13 +37,12 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex }) =
           {rowIndex + 1}:{blockIndex + 1}
         </span>
         <button className="delete" onClick={onRemove}>
-        ×
-      </button>
+          ×
+        </button>
       </div>
       
       <div className="block-content">
         <span className="block-number">{blockNumber}</span>
-        
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ const BlockField = ({
   onRemoveBlock,
   canAddRight,
   moveBlock,
-  rowIndex
+  rowIndex,
+  MAX_BLOCKS_IN_ROW
 }) => {
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
@@ -20,9 +21,11 @@ const BlockField = ({
               id={block.id}
               blockIndex={blockIndex} 
               blockNumber={block.number} 
-              rowIndex={rowIndex} 
-              onRemove={() => onRemoveBlock(blockIndex)}
+              rowIndex={rowIndex}
+              blocks={blocks} 
               moveBlock={moveBlock}
+              MAX_BLOCKS_IN_ROW={MAX_BLOCKS_IN_ROW} 
+              onRemove={() => onRemoveBlock(blockIndex)}
             />
           );
         })}
