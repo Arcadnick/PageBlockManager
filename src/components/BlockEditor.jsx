@@ -44,10 +44,6 @@ const BlockEditor = () => {
       return;
     }
   
-    if (fromRowIndex !== toRowIndex && toRow.length >= MAX_BLOCKS_IN_ROW) {
-      return;
-    }
-  
     const temp = fromRow[fromBlockIndex];
     fromRow[fromBlockIndex] = toRow[toBlockIndex];
     toRow[toBlockIndex] = temp;
