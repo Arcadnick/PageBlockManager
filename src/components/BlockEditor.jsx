@@ -4,7 +4,7 @@ import BlockField from './BlockField';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { v4 as uuidv4 } from 'uuid';
 
-const MAX_BLOCKS_IN_ROW = 4;
+const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
   const [fields, setFields] = useState([[{ id: uuidv4(), number: 1, content: '' }]]);
@@ -37,21 +37,22 @@ const BlockEditor = () => {
 
   const moveBlock = (fromRowIndex, fromBlockIndex, toRowIndex, toBlockIndex) => {
     const updatedFields = [...fields];
-  
-    if (updatedFields[toRowIndex].length >= MAX_BLOCKS_IN_ROW) {
-      return;
-    }
-  
     const fromRow = updatedFields[fromRowIndex];
     const toRow = updatedFields[toRowIndex];
   
-    if (!fromRow || !fromRow[fromBlockIndex]) return;
+    const isSameRow = fromRowIndex === toRowIndex;
   
-    const [movedBlock] = fromRow.splice(fromBlockIndex, 1); 
-    toRow.splice(toBlockIndex, 0, movedBlock); 
+    if (!isSameRow && toRow.length >= MAX_BLOCKS_IN_ROW) {
+      return;
+    }
+  
+    const [movedBlock] = fromRow.splice(fromBlockIndex, 1);
+  
+    toRow.splice(toBlockIndex, 0, movedBlock);
   
     setFields(updatedFields);
-  };  
+  };
+    
 
   const allBlocks = fields.flat();
 

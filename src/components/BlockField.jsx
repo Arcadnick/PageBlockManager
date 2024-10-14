@@ -23,8 +23,7 @@ const BlockField = ({
               blockNumber={block.number} 
               rowIndex={rowIndex}
               blocks={blocks} 
-              moveBlock={moveBlock}
-              MAX_BLOCKS_IN_ROW={MAX_BLOCKS_IN_ROW} 
+              moveBlock={moveBlock} 
               onRemove={() => onRemoveBlock(blockIndex)}
             />
           );

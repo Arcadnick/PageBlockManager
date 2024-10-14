@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks, MAX_BLOCKS_IN_ROW }) => {
+const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: 'block',
     item: { id, rowIndex, blockIndex },
@@ -13,7 +13,6 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blo
   const [{ isOver, canDrop }, dropRef] = useDrop({
     accept: 'block',
     hover: (item) => {
-      if (blocks.length >= MAX_BLOCKS_IN_ROW) return;
 
       if (item.rowIndex !== rowIndex || item.blockIndex !== blockIndex) {
         moveBlock(item.rowIndex, item.blockIndex, rowIndex, blockIndex);
@@ -23,7 +22,7 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blo
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop() && blocks.length < MAX_BLOCKS_IN_ROW,
+      canDrop: monitor.canDrop(),
     }),
   });
 
@@ -43,6 +42,7 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blo
       
       <div className="block-content">
         <span className="block-number">{blockNumber}</span>
+        <span>{blocks.content="content " + blockNumber}</span>
       </div>
     </div>
   );
