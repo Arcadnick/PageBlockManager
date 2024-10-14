@@ -40,20 +40,21 @@ const BlockEditor = () => {
     const fromRow = updatedFields[fromRowIndex];
     const toRow = updatedFields[toRowIndex];
   
-    const isSameRow = fromRowIndex === toRowIndex;
-  
-    if (!isSameRow && toRow.length >= MAX_BLOCKS_IN_ROW) {
+    if (!fromRow || !fromRow[fromBlockIndex] || !toRow || !toRow[toBlockIndex]) {
       return;
     }
   
-    const [movedBlock] = fromRow.splice(fromBlockIndex, 1);
+    if (fromRowIndex !== toRowIndex && toRow.length >= MAX_BLOCKS_IN_ROW) {
+      return;
+    }
   
-    toRow.splice(toBlockIndex, 0, movedBlock);
+    const temp = fromRow[fromBlockIndex];
+    fromRow[fromBlockIndex] = toRow[toBlockIndex];
+    toRow[toBlockIndex] = temp;
   
     setFields(updatedFields);
   };
-    
-
+  
   const allBlocks = fields.flat();
 
   return (

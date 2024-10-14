@@ -12,11 +12,10 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blo
 
   const [{ isOver, canDrop }, dropRef] = useDrop({
     accept: 'block',
-    hover: (item) => {
-
+    drop: (item) => {
       if (item.rowIndex !== rowIndex || item.blockIndex !== blockIndex) {
         moveBlock(item.rowIndex, item.blockIndex, rowIndex, blockIndex);
-        item.rowIndex = rowIndex;
+        item.rowIndex = rowIndex;  
         item.blockIndex = blockIndex;
       }
     },
