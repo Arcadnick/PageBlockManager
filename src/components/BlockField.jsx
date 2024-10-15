@@ -8,8 +8,7 @@ const BlockField = ({
   onRemoveBlock,
   canAddRight,
   moveBlock,
-  rowIndex,
-  MAX_BLOCKS_IN_ROW
+  rowIndex
 }) => {
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
