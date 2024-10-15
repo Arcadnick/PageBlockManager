@@ -1,34 +1,28 @@
 import { DndProvider } from 'react-dnd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import BlockField from './BlockField';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { v4 as uuidv4 } from 'uuid';
 
 const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
-  const [fields, setFields] = useState([[{ id: Date.now(), content: '' }]]);
+  const [fields, setFields] = useState([[{ id: uuidv4(), number: 1, content: '' }]]);
+  const blockCounter = useRef(2); 
 
   const addBlockToField = (rowIndex) => {
     const updatedFields = [...fields];
     const row = updatedFields[rowIndex];
     if (row.length < MAX_BLOCKS_IN_ROW) {
-      row.push({ id: Date.now(), content: '' });
+      const newBlockNumber = blockCounter.current++; 
+      row.push({ id: uuidv4(), number: newBlockNumber, content: '' });
       setFields(updatedFields);
     }
   };
 
   const addFieldBelow = (rowIndex) => {
     const updatedFields = [...fields];
-    updatedFields.splice(rowIndex + 1, 0, [{ id: Date.now(), content: '' }]);
-    setFields(updatedFields);
-  };
-
-  const updateBlockContent = (rowIndex, blockIndex, content) => {
-    const updatedFields = fields.map((field, rIdx) =>
-      rIdx === rowIndex
-        ? field.map((block, bIdx) => (bIdx === blockIndex ? { ...block, content } : block))
-        : field
-    );
+    updatedFields.splice(rowIndex + 1, 0, [{ id: uuidv4(), number: blockCounter.current++, content: '' }]);
     setFields(updatedFields);
   };
 
@@ -43,21 +37,21 @@ const BlockEditor = () => {
 
   const moveBlock = (fromRowIndex, fromBlockIndex, toRowIndex, toBlockIndex) => {
     const updatedFields = [...fields];
-
-    if (!updatedFields[fromRowIndex] || !updatedFields[fromRowIndex][fromBlockIndex]) return;
-
-    const [movedBlock] = updatedFields[fromRowIndex].splice(fromBlockIndex, 1);
-
-    if (!updatedFields[toRowIndex]) {
-      updatedFields[toRowIndex] = [];
+    const fromRow = updatedFields[fromRowIndex];
+    const toRow = updatedFields[toRowIndex];
+  
+    if (!fromRow || !fromRow[fromBlockIndex] || !toRow || !toRow[toBlockIndex]) {
+      return;
     }
-
-    updatedFields[toRowIndex].splice(toBlockIndex, 0, movedBlock);
-
+  
+    const temp = fromRow[fromBlockIndex];
+    fromRow[fromBlockIndex] = toRow[toBlockIndex];
+    toRow[toBlockIndex] = temp;
+  
     setFields(updatedFields);
   };
-
-  const allBlocks = fields.flat(); 
+  
+  const allBlocks = fields.flat();
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -68,16 +62,16 @@ const BlockEditor = () => {
             blocks={field}
             onAddBlock={() => addBlockToField(rowIndex)}
             onAddField={() => addFieldBelow(rowIndex)}
-            onUpdateBlock={(blockIndex, content) => updateBlockContent(rowIndex, blockIndex, content)}
             onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
             canAddRight={field.length < MAX_BLOCKS_IN_ROW}
             moveBlock={moveBlock}
-            allBlocks={allBlocks} 
+            allBlocks={allBlocks}
+            rowIndex={rowIndex} 
+            MAX_BLOCKS_IN_ROW={MAX_BLOCKS_IN_ROW}
           />
         ))}
       </div>
     </DndProvider>
   );
 };
-
 export default BlockEditor;
