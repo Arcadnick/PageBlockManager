@@ -44,7 +44,6 @@
   
   .block-header {
     background-color: #f0f0f0;
-    padding: 10px;
     cursor: move;
     border-bottom: 1px solid black;
     text-align: center;
@@ -64,7 +63,7 @@
   
   .delete {
     position: absolute;
-    top: -7px;
+    top: -8px;
     right: 3px;
     background-color: red;
     color: white;
@@ -82,3 +81,10 @@
   .hovered {
     border: 2px dashed green;
   }
+
+  .block-coordinates {
+    font-size: 14px;
+    color: gray;
+    display: flex;
+    justify-content: start;
+  }  
