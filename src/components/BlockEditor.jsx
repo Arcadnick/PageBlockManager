@@ -56,6 +56,8 @@ const BlockEditor = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
+        <button style={{ marginLeft: '5px' }}>save</button>
+        <button style={{ marginLeft: '10px' }}>upload</button>
         {fields.map((field, rowIndex) => (
           <BlockField
             key={rowIndex}

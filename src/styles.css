@@ -1,5 +1,5 @@
   button {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     padding: 5px 10px;
     cursor: pointer;
   }
@@ -14,7 +14,7 @@
     font-size: 14px;
     width: 30px;
     height: 30px;
-    top: 35%;
+    top: 45%;
     right: -9px;
   }
   
@@ -28,7 +28,7 @@
     font-size: 14px;
     width: 30px;
     height: 30px;
-    top: 78%;
+    top: 85%;
     right: 48.5%;
   }
 
@@ -63,14 +63,14 @@
   
   .delete {
     position: absolute;
-    top: -8px;
-    right: 3px;
+    top: 0;
+    right: 0;
     background-color: red;
     color: white;
     border: none;
     padding: 5px;
     cursor: pointer;
-    height: 15px;
+    height: 16px;
     padding-top: revert-layer;
   }
   
@@ -87,4 +87,5 @@
     color: gray;
     display: flex;
     justify-content: start;
+    margin-left: 3px;
   }  
