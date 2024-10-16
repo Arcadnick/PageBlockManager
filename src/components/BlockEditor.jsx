@@ -76,6 +76,7 @@ const BlockEditor = () => {
     <DndProvider backend={HTML5Backend}>
       <div>
         <button style={{ marginLeft: '5px' }} onClick={saveToFile}>save</button>
+        <button style={{ marginLeft: '5px' }} >saveDB</button>
         {/* <button style={{ marginLeft: '10px' }}>upload</button> */}
         <label style={{ marginLeft: '10px' }}>
           <input type="file" onChange={uploadFromFile}/>
