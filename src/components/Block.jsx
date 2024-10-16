@@ -38,10 +38,9 @@ const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blo
           ×
         </button>
       </div>
-      
       <div className="block-content">
         <span className="block-number">{blockNumber}</span>
-        <span>{blocks.content="content " + blockNumber}</span>
+        <span>{blocks[blockIndex].content}</span>
       </div>
     </div>
   );

@@ -50,14 +50,37 @@ const BlockEditor = () => {
   
     setFields(updatedFields);
   };
-  
-  const allBlocks = fields.flat();
+
+  const saveToFile = () => {
+    const blob = new Blob([JSON.stringify(fields)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'blocks.json'; 
+    link.click();
+  };
+
+  const uploadFromFile = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = JSON.parse(e.target.result); 
+      setFields(data); 
+      blockCounter.current = data.flat().length + 1; 
+    };
+    reader.readAsText(file);
+  };  
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        <button style={{ marginLeft: '5px' }}>save</button>
-        <button style={{ marginLeft: '10px' }}>upload</button>
+        <button style={{ marginLeft: '5px' }} onClick={saveToFile}>save</button>
+        <button style={{ marginLeft: '5px' }} >saveDB</button>
+        {/* <button style={{ marginLeft: '10px' }}>upload</button> */}
+        <label style={{ marginLeft: '10px' }}>
+          <input type="file" onChange={uploadFromFile}/>
+        </label>
         {fields.map((field, rowIndex) => (
           <BlockField
             key={rowIndex}
@@ -67,9 +90,7 @@ const BlockEditor = () => {
             onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
             canAddRight={field.length < MAX_BLOCKS_IN_ROW}
             moveBlock={moveBlock}
-            allBlocks={allBlocks}
             rowIndex={rowIndex} 
-            MAX_BLOCKS_IN_ROW={MAX_BLOCKS_IN_ROW}
           />
         ))}
       </div>
