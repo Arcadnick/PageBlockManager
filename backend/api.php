@@ -29,7 +29,7 @@ function saveDataToDatabase($db, $fields) {
         foreach ($row as $columnIndex => $block) {
             $stmt->execute([
                 // ':number' => $block['number'],
-                ':content' => $block['number'], 
+                ':content' => $block['content'], 
                 ':row' => $rowIndex, 
                 ':column'=> $columnIndex
             ]);
@@ -41,20 +41,16 @@ function loadDataFromDatabase($db) {
     $stmt = $db->query('SELECT content, row, column FROM blocks');
     $blocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Преобразуем блоки в двумерный массив
     $fields = [];
     foreach ($blocks as $block) {
-        // Убедимся, что каждая строка существует как массив
         if (!isset($fields[$block['row']])) {
             $fields[$block['row']] = [];
         }
-        // Заполняем ячейку на основе column
         $fields[$block['row']][$block['column']] = [
             'content' => $block['content'],
             'number' => $block['column']
         ];
     }
 
-    // Удаляем пустые строки и преобразуем обратно в простой массив
     return array_values(array_filter($fields, fn($field) => !empty($field)));
 }

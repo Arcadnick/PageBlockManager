@@ -28,28 +28,12 @@ const BlockEditor = () => {
     }
 };
 
-// const loadFromDatabase = async () => {
-//     try {
-//       const response = await fetch('http://localhost:8000/api.php?action=load');
-//       if (response.ok) {
-//         const data = await response.json();
-//         console.log(data);
-//         console.log(fields);
-//         setFields(data);
-//       } else {
-//         console.error("Failed to load data");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//     }
-// };
-
 const loadFromDatabase = async () => {
   try {
     const response = await fetch('http://localhost:8000/api.php?action=load');
     if (response.ok) {
       const data = await response.json();
-      console.log("Loaded data:", data); // Логируем загруженные данные
+      console.log("Loaded data:", data); 
       if (Array.isArray(data)) {
         setFields(data);
       } else {
@@ -62,7 +46,6 @@ const loadFromDatabase = async () => {
     console.error("Error:", error);
   }
 };
-
 
 /////////////////////////////////////
 

@@ -10,14 +10,6 @@ const BlockField = ({
   moveBlock,
   rowIndex
 }) => {
-
-  console.log("Blocks in BlockField:", blocks); // Логируем блоки
-
-  if (!Array.isArray(blocks)) {
-    console.error("Blocks is not an array:", blocks);
-    return null; // Или можно вернуть что-то по умолчанию
-  }
-
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
       <div style={{ display: 'flex', width: '100%' }}>
