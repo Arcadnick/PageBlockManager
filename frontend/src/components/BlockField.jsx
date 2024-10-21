@@ -11,6 +11,8 @@ const BlockField = ({
   rowIndex
 }) => {
 
+  //console.log(blocks);
+
   if (!Array.isArray(blocks)) {
     console.error("Blocks is not an array:", blocks);
     return null;
