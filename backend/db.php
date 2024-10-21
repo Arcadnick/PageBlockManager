@@ -17,4 +17,9 @@ class Database {
         $stmt->execute($params);
         return $stmt;
     }
+
+    public function prepare($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt;
+    }
 }

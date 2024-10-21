@@ -23,13 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 function saveDataToDatabase($db, $fields) {
     $db->query('DELETE FROM blocks'); 
-    $stmt = $db->query('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)');
-    //var_dump("prihod ".$fields);
+    $stmt = $db->prepare('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)');
     foreach ($fields as $rowIndex => $row) {
-        //var_dump("row".$row);
         foreach ($row as $columnIndex => $block) {
-
-            //var_dump("column".$block);
             $stmt->execute([
                 // ':number' => $block['number'],
                 ':content' => $block['content'], 
@@ -54,6 +50,5 @@ function loadDataFromDatabase($db) {
             'number' => $block['column']
         ];
     }
-
     return array_values(array_filter($fields, fn($field) => !empty($field)));
 }

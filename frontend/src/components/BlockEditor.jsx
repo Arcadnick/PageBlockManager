@@ -9,10 +9,8 @@ const BlockEditor = () => {
   const [fields, setFields] = useState([[{number: 1, content: '' }]]);
   const blockCounter = useRef(2); 
 
-  ///////////////////////////////////
   const saveToDatabase = async () => {
     try {
-      //console.log("save:",fields);
       const response = await fetch('http://localhost:8000/api.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,7 +32,7 @@ const loadFromDatabase = async () => {
     const response = await fetch('http://localhost:8000/api.php?action=load');
     if (response.ok) {
       const data = await response.json();
-      //console.log("Loaded data:", data); 
+
       if (Array.isArray(data)) {
         setFields(data);
       } else {
@@ -47,8 +45,6 @@ const loadFromDatabase = async () => {
     console.error("Error:", error);
   }
 };
-
-/////////////////////////////////////
 
   const addBlockToField = (rowIndex) => {
     const updatedFields = [...fields];
@@ -111,8 +107,7 @@ const loadFromDatabase = async () => {
     };
     reader.readAsText(file);
   };  
-   //console.log("fields");
-  //console.log("update",fields);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
