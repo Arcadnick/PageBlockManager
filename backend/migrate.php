@@ -1,9 +1,8 @@
 <?php
 require 'db.php';
 
-$db = new Database('/../database/blocks.db');  // Указываем путь к файлу базы данных
-//database/blocks.db
-// Создаем таблицы в базе данных
+$db = new Database('/blocks.db'); 
+
 $db->query("
     CREATE TABLE IF NOT EXISTS blocks (
         id_block INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -1,5 +1,5 @@
 import { DndProvider } from 'react-dnd';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import BlockField from './BlockField';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,6 +9,40 @@ const MAX_BLOCKS_IN_ROW = 3;
 const BlockEditor = () => {
   const [fields, setFields] = useState([[{ id: uuidv4(), number: 1, content: '' }]]);
   const blockCounter = useRef(2); 
+
+  ///////////////////////////////////
+  const saveToDatabase = async () => {
+    try {
+      console.log(fields);
+      const response = await fetch('http://localhost:8000/api.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', data: fields })
+      });
+      if (response.ok) {
+        console.log("Data saved to the database successfully");
+      } else {
+        console.error("Failed to save data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+};
+
+const loadFromDatabase = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api.php?action=load');
+      if (response.ok) {
+        const data = await response.json();
+        setFields(data);
+      } else {
+        console.error("Failed to load data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+};
+/////////////////////////////////////
 
   const addBlockToField = (rowIndex) => {
     const updatedFields = [...fields];
@@ -75,10 +109,10 @@ const BlockEditor = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
-        <button style={{ marginLeft: '5px' }} onClick={saveToFile}>save</button>
-        <button style={{ marginLeft: '5px' }} >saveDB</button>
-        {/* <button style={{ marginLeft: '10px' }}>upload</button> */}
-        <label style={{ marginLeft: '10px' }}>
+        <button style={{ marginLeft: '5px' }} onClick={saveToDatabase}>Save to DB</button>
+        <button style={{ marginLeft: '5px' }} onClick={loadFromDatabase}>Load from DB</button>
+        <button style={{ marginLeft: '25px' }} onClick={saveToFile}>Save to file</button> 
+        <label style={{ marginLeft: '5px' }}>
           <input type="file" onChange={uploadFromFile}/>
         </label>
         {fields.map((field, rowIndex) => (

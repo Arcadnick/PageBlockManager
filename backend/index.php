@@ -1,2 +1,2 @@
 <?php
-echo "Its work!";
+echo "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧";

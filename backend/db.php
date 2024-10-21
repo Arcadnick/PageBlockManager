@@ -3,10 +3,13 @@ class Database {
     private $pdo;
 
     public function __construct($dbFile) {
-        //$this->pdo = new PDO("sqlite:" . $dbFile);
-        $this->pdo = new PDO("sqlite:" . __DIR__ . $dbFile);
-
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $dsn = 'sqlite:'.__DIR__.'/'.$dbFile;
+        try {
+            $this->pdo = new PDO($dsn);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
     }
 
     public function query($sql, $params = []) {
