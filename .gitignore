@@ -27,3 +27,4 @@ yarn-error.log*
 .idea/page_block_manager.iml
 .idea/vcs.xml
 backend/blocks.db
+backend/blocks.db

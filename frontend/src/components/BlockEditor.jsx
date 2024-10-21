@@ -12,12 +12,13 @@ const BlockEditor = () => {
   ///////////////////////////////////
   const saveToDatabase = async () => {
     try {
-      console.log(fields);
+      //console.log(fields);
       const response = await fetch('http://localhost:8000/api.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'save', data: fields })
       });
+      
       if (response.ok) {
         console.log("Data saved to the database successfully");
       } else {
@@ -33,7 +34,7 @@ const loadFromDatabase = async () => {
     const response = await fetch('http://localhost:8000/api.php?action=load');
     if (response.ok) {
       const data = await response.json();
-      console.log("Loaded data:", data); 
+      //console.log("Loaded data:", data); 
       if (Array.isArray(data)) {
         setFields(data);
       } else {

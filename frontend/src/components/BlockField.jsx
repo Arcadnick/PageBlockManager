@@ -10,6 +10,12 @@ const BlockField = ({
   moveBlock,
   rowIndex
 }) => {
+
+  if (!Array.isArray(blocks)) {
+    console.error("Blocks is not an array:", blocks);
+    return null;
+  }
+
   return (
     <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
       <div style={{ display: 'flex', width: '100%' }}>
