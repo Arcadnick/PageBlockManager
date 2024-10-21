@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-const Block = ({ id, blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks }) => {
+const Block = ({ blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: 'block',
-    item: { id, rowIndex, blockIndex },
+    item: { rowIndex, blockIndex },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

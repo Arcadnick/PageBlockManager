@@ -1,13 +1,12 @@
 import { DndProvider } from 'react-dnd';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import BlockField from './BlockField';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { v4 as uuidv4 } from 'uuid';
 
 const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
-  const [fields, setFields] = useState([[{ id: uuidv4(), number: 1, content: '' }]]);
+  const [fields, setFields] = useState([[{number: 1, content: '' }]]);
   const blockCounter = useRef(2); 
 
   ///////////////////////////////////
@@ -29,19 +28,42 @@ const BlockEditor = () => {
     }
 };
 
+// const loadFromDatabase = async () => {
+//     try {
+//       const response = await fetch('http://localhost:8000/api.php?action=load');
+//       if (response.ok) {
+//         const data = await response.json();
+//         console.log(data);
+//         console.log(fields);
+//         setFields(data);
+//       } else {
+//         console.error("Failed to load data");
+//       }
+//     } catch (error) {
+//       console.error("Error:", error);
+//     }
+// };
+
 const loadFromDatabase = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api.php?action=load');
-      if (response.ok) {
-        const data = await response.json();
+  try {
+    const response = await fetch('http://localhost:8000/api.php?action=load');
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Loaded data:", data); // Логируем загруженные данные
+      if (Array.isArray(data)) {
         setFields(data);
       } else {
-        console.error("Failed to load data");
+        console.error("Loaded data is not an array", data);
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } else {
+      console.error("Failed to load data");
     }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
+
+
 /////////////////////////////////////
 
   const addBlockToField = (rowIndex) => {
@@ -49,14 +71,14 @@ const loadFromDatabase = async () => {
     const row = updatedFields[rowIndex];
     if (row.length < MAX_BLOCKS_IN_ROW) {
       const newBlockNumber = blockCounter.current++; 
-      row.push({ id: uuidv4(), number: newBlockNumber, content: '' });
+      row.push({ number: newBlockNumber, content: '' });
       setFields(updatedFields);
     }
   };
 
   const addFieldBelow = (rowIndex) => {
     const updatedFields = [...fields];
-    updatedFields.splice(rowIndex + 1, 0, [{ id: uuidv4(), number: blockCounter.current++, content: '' }]);
+    updatedFields.splice(rowIndex + 1, 0, [{ number: blockCounter.current++, content: '' }]);
     setFields(updatedFields);
   };
 
