@@ -33,10 +33,11 @@ const loadFromDatabase = async () => {
     if (response.ok) {
       const data = await response.json();
 
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
         setFields(data);
       } else {
-        console.error("Loaded data is not an array", data);
+        alert("Данные не найдены в базе. Блоки останутся без изменений.");
+        console.error("No data found in the database.");
       }
     } else {
       console.error("Failed to load data");
@@ -87,36 +88,36 @@ const loadFromDatabase = async () => {
     setFields(updatedFields);
   };
 
-  const saveToFile = () => {
-    const blob = new Blob([JSON.stringify(fields)], { type: 'application/json' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'blocks.json'; 
-    link.click();
-  };
+  // const saveToFile = () => {
+  //   const blob = new Blob([JSON.stringify(fields)], { type: 'application/json' });
+  //   const link = document.createElement('a');
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = 'blocks.json'; 
+  //   link.click();
+  // };
 
-  const uploadFromFile = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  // const uploadFromFile = (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) return;
     
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = JSON.parse(e.target.result); 
-      setFields(data); 
-      blockCounter.current = data.flat().length + 1; 
-    };
-    reader.readAsText(file);
-  };  
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     const data = JSON.parse(e.target.result); 
+  //     setFields(data); 
+  //     blockCounter.current = data.flat().length + 1; 
+  //   };
+  //   reader.readAsText(file);
+  // };  
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
         <button style={{ marginLeft: '5px' }} onClick={saveToDatabase}>Save to DB</button>
         <button style={{ marginLeft: '5px' }} onClick={loadFromDatabase}>Load from DB</button>
-        <button style={{ marginLeft: '25px' }} onClick={saveToFile}>Save to file</button> 
+        {/* <button style={{ marginLeft: '25px' }} onClick={saveToFile}>Save to file</button> 
         <label style={{ marginLeft: '5px' }}>
           <input type="file" onChange={uploadFromFile}/>
-        </label>
+        </label> */}
         {fields.map((field, rowIndex) => (
           <BlockField
             key={rowIndex}

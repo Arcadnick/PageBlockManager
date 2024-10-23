@@ -21,18 +21,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     echo json_encode($data);
 }
 
+// function saveDataToDatabase($db, $fields) {
+//     $db->query('DELETE FROM blocks'); 
+//     $stmt = $db->prepare('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)');
+//     foreach ($fields as $rowIndex => $row) {
+//         foreach ($row as $columnIndex => $block) {
+//             $stmt->execute([
+//                 //Пока так, что бы было понятно перемещаются ли блоки
+//                 //':content' => $block['content'],
+//                 ':content' => $block['number'], 
+//                 ':row' => $rowIndex, 
+//                 ':column'=> $columnIndex
+//             ]);
+//         }
+//     }
+// }
+
 function saveDataToDatabase($db, $fields) {
-    $db->query('DELETE FROM blocks'); 
-    $stmt = $db->prepare('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)');
-    foreach ($fields as $rowIndex => $row) {
-        foreach ($row as $columnIndex => $block) {
-            $stmt->execute([
-                // ':number' => $block['number'],
-                ':content' => $block['content'], 
-                ':row' => $rowIndex, 
-                ':column'=> $columnIndex
-            ]);
+    try {
+        $existingBlocks = $db->query('SELECT id_block, row, column FROM blocks')->fetchAll(PDO::FETCH_ASSOC);
+
+        $blocksInRequest = [];
+
+        foreach ($fields as $rowIndex => $row) {
+            foreach ($row as $columnIndex => $block) {
+                $blocksInRequest[] = ['row' => $rowIndex, 'column' => $columnIndex];
+
+                $existingBlock = $db->query('SELECT id_block FROM blocks WHERE row = :row AND column = :column', [
+                    ':row' => $rowIndex,
+                    ':column' => $columnIndex
+                ])->fetch(PDO::FETCH_ASSOC);
+
+                if ($existingBlock) {
+                    $db->query('UPDATE blocks SET content = :content WHERE row = :row AND column = :column', [
+                        ':content' => $block['number'], 
+                        ':row' => $rowIndex, 
+                        ':column' => $columnIndex
+                    ]);
+                } else {
+                    $db->query('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)', [
+                        ':content' => $block['number'], 
+                        ':row' => $rowIndex, 
+                        ':column' => $columnIndex
+                    ]);
+                }
+            }
         }
+
+        foreach ($existingBlocks as $existingBlock) {
+            $blockExistsInRequest = false;
+            foreach ($blocksInRequest as $block) {
+                if ($block['row'] == $existingBlock['row'] && $block['column'] == $existingBlock['column']) {
+                    $blockExistsInRequest = true;
+                    break;
+                }
+            }
+
+            if (!$blockExistsInRequest) {
+                $db->query('DELETE FROM blocks WHERE row = :row AND column = :column', [
+                    ':row' => $existingBlock['row'],
+                    ':column' => $existingBlock['column']
+                ]);
+            }
+        }
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 }
 

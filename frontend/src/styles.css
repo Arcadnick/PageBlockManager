@@ -28,7 +28,6 @@
     width: 30px;
     height: 30px;
     top: 85%;
-    right: 48.5%;
   }
 
   .block-container {
@@ -88,3 +87,11 @@
     justify-content: start;
     margin-left: 3px;
   }  
+
+  .block-field-container {
+    position: relative; 
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }

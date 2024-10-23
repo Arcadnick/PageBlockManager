@@ -11,7 +11,7 @@ const BlockField = ({
   rowIndex
 }) => {
   return (
-    <div style={{ position: 'relative', marginBottom: '20px', width: '100%' }}>
+    <div className='block-field-container'>
       <div style={{ display: 'flex', width: '100%' }}>
         {blocks.map((block, blockIndex) => {
           return (
@@ -26,7 +26,7 @@ const BlockField = ({
             />
           );
         })}
-        
+
         {canAddRight && (
           <button className="add-block" onClick={onAddBlock}>
             +
