@@ -88,50 +88,32 @@ const loadFromDatabase = async () => {
     setFields(updatedFields);
   };
 
-  // const saveToFile = () => {
-  //   const blob = new Blob([JSON.stringify(fields)], { type: 'application/json' });
-  //   const link = document.createElement('a');
-  //   link.href = URL.createObjectURL(blob);
-  //   link.download = 'blocks.json'; 
-  //   link.click();
-  // };
-
-  // const uploadFromFile = (event) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
-    
-  //   const reader = new FileReader();
-  //   reader.onload = (e) => {
-  //     const data = JSON.parse(e.target.result); 
-  //     setFields(data); 
-  //     blockCounter.current = data.flat().length + 1; 
-  //   };
-  //   reader.readAsText(file);
-  // };  
-
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div>
-        <button style={{ marginLeft: '5px' }} onClick={saveToDatabase}>Save to DB</button>
-        <button style={{ marginLeft: '5px' }} onClick={loadFromDatabase}>Load from DB</button>
-        {/* <button style={{ marginLeft: '25px' }} onClick={saveToFile}>Save to file</button> 
-        <label style={{ marginLeft: '5px' }}>
-          <input type="file" onChange={uploadFromFile}/>
-        </label> */}
-        {fields.map((field, rowIndex) => (
-          <BlockField
-            key={rowIndex}
-            blocks={field}
-            onAddBlock={() => addBlockToField(rowIndex)}
-            onAddField={() => addFieldBelow(rowIndex)}
-            onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
-            canAddRight={field.length < MAX_BLOCKS_IN_ROW}
-            moveBlock={moveBlock}
-            rowIndex={rowIndex} 
-          />
-        ))}
-      </div>
-    </DndProvider>
+    <div>
+      {/* <div className=''> */}
+        <textarea className='content-editor'>
+
+        </textarea>
+      {/* </div> */}
+      <DndProvider backend={HTML5Backend}>
+        <div className='block-manager'>
+          <button onClick={saveToDatabase}>Save to DB</button>
+          <button style={{ marginTop: '5px' }} onClick={loadFromDatabase}>Load from DB</button>
+          {fields.map((field, rowIndex) => (
+            <BlockField
+              key={rowIndex}
+              blocks={field}
+              onAddBlock={() => addBlockToField(rowIndex)}
+              onAddField={() => addFieldBelow(rowIndex)}
+              onRemoveBlock={(blockIndex) => removeBlock(rowIndex, blockIndex)}
+              canAddRight={field.length < MAX_BLOCKS_IN_ROW}
+              moveBlock={moveBlock}
+              rowIndex={rowIndex} 
+            />
+          ))}
+        </div>
+      </DndProvider>
+    </div>
   );
 };
 export default BlockEditor;
