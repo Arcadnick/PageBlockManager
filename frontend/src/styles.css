@@ -2,6 +2,12 @@
     padding: 5px 10px;
     cursor: pointer;
   }
+
+  .block-manager {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
   
   button.add-block {
     position: absolute;
@@ -28,7 +34,6 @@
     width: 30px;
     height: 30px;
     top: 85%;
-    right: 48.5%;
   }
 
   .block-container {
@@ -52,7 +57,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100px;
   }
   
   .block-number {
@@ -88,3 +92,19 @@
     justify-content: start;
     margin-left: 3px;
   }  
+
+  .block-field-container {
+    position: relative; 
+    margin-bottom: 20px;
+    /* width: 100%; */
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .content-editor{
+    width: 48%;
+    height: 200px;
+    resize: none;
+    position: fixed;
+  }
