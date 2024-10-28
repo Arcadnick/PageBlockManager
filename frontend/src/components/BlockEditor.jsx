@@ -7,6 +7,8 @@ const MAX_BLOCKS_IN_ROW = 3;
 
 const BlockEditor = () => {
   const [fields, setFields] = useState([[{number: 1, content: '' }]]);
+  const [selectedBlock, setSelectedBlock] = useState(null); 
+  const [textareaValue, setTextareaValue] = useState('');
   const blockCounter = useRef(2); 
 
   const saveToDatabase = async () => {
@@ -88,13 +90,47 @@ const loadFromDatabase = async () => {
     setFields(updatedFields);
   };
 
+  const handleBlockClick = (rowIndex, blockIndex) => {
+    const row = fields[rowIndex];
+    console.log(row);
+    console.log(blockIndex);
+    console.log(row[blockIndex]);
+    const block = row ? row[blockIndex] : null;
+  
+    if (block) {
+      setSelectedBlock({ rowIndex, blockIndex });
+      setTextareaValue(block.content);
+    } else {
+      console.error("Block not found at the specified indexes:", rowIndex, blockIndex);
+    }
+  };
+  
+
+  const handleTextareaChange = (event) => {
+    setTextareaValue(event.target.value);
+  };
+
+  const saveContentChange = () => {
+    if (selectedBlock) {
+      const updatedFields = [...fields];
+      const { rowIndex, blockIndex } = selectedBlock;
+      updatedFields[rowIndex][blockIndex].content = textareaValue;
+      setFields(updatedFields);
+    }
+  };
+
   return (
     <div>
-      {/* <div className=''> */}
-        <textarea className='content-editor'>
-
-        </textarea>
-      {/* </div> */}
+      <div className='editor-container'>
+        <textarea 
+          className='content-editor'
+          value={textareaValue}
+          onChange={handleTextareaChange}
+          placeholder="Выберите блок для редактирования"
+        ></textarea>
+        <button style={{ width: '105px' }} onClick={saveContentChange}>Save Content</button>
+      </div>
+      
       <DndProvider backend={HTML5Backend}>
         <div className='block-manager'>
           <button onClick={saveToDatabase}>Save to DB</button>
@@ -109,6 +145,7 @@ const loadFromDatabase = async () => {
               canAddRight={field.length < MAX_BLOCKS_IN_ROW}
               moveBlock={moveBlock}
               rowIndex={rowIndex} 
+              onBlockClick={(blockIndex) => handleBlockClick(rowIndex, blockIndex)}
             />
           ))}
         </div>

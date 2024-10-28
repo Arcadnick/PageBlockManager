@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-const Block = ({ blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks }) => {
+const Block = ({ blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks, onClick }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: 'block',
     item: { rowIndex, blockIndex },
@@ -29,12 +29,13 @@ const Block = ({ blockIndex, blockNumber, onRemove, moveBlock, rowIndex, blocks 
     <div
       ref={dropRef}
       className={`block-container ${isDragging ? 'dragging' : ''} ${isOver && canDrop ? 'hovered' : ''}`}
+      onClick={() => onClick(blockIndex)}
     >
       <div ref={dragRef} className="block-header">
         <span className="block-coordinates">
           {rowIndex + 1}:{blockIndex + 1}
         </span>
-        <button className="delete" onClick={onRemove}>
+        <button className="delete" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
           ×
         </button>
       </div>

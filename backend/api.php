@@ -38,14 +38,16 @@ function saveDataToDatabase($db, $fields) {
 
                 if ($existingBlock) {
                     $db->query('UPDATE blocks SET content = :content WHERE row = :row AND column = :column', [
-                        ':content' => $block['number'], //потом переделать number -> content
+                        ':content'=> $block['content'],
+                        //':content' => $block['number'], //потом переделать number -> content
                         ':row' => $rowIndex, 
                         ':column' => $columnIndex
                     ]);
                     $idBlock = $existingBlock['id_block'];
                 } else {
                     $db->query('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)', [
-                        ':content' => $block['number'], //потом переделать number -> content
+                        ':content'=> $block['content'],
+                        //':content' => $block['number'], //потом переделать number -> content
                         ':row' => $rowIndex, 
                         ':column' => $columnIndex
                     ]);
