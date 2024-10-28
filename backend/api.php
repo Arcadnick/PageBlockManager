@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 function saveDataToDatabase($db, $fields) {
     try {
         $existingBlocks = $db->query('SELECT id_block, row, column FROM blocks')->fetchAll(PDO::FETCH_ASSOC);
-
+        $existingBlockIds = [];
         $blocksInRequest = [];
 
         foreach ($fields as $rowIndex => $row) {
@@ -37,9 +37,9 @@ function saveDataToDatabase($db, $fields) {
                 ])->fetch(PDO::FETCH_ASSOC);
 
                 if ($existingBlock) {
+                    $existingBlockIds[] = $existingBlock['id_block'];
                     $db->query('UPDATE blocks SET content = :content WHERE row = :row AND column = :column', [
                         ':content'=> $block['content'],
-                        //':content' => $block['number'], //потом переделать number -> content
                         ':row' => $rowIndex, 
                         ':column' => $columnIndex
                     ]);
@@ -47,7 +47,6 @@ function saveDataToDatabase($db, $fields) {
                 } else {
                     $db->query('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)', [
                         ':content'=> $block['content'],
-                        //':content' => $block['number'], //потом переделать number -> content
                         ':row' => $rowIndex, 
                         ':column' => $columnIndex
                     ]);
@@ -67,6 +66,12 @@ function saveDataToDatabase($db, $fields) {
             }
 
             if (!$blockExistsInRequest) {
+
+                $db->query('DELETE FROM blocks_resources WHERE id_block = (SELECT id_block FROM blocks WHERE row = :row AND column = :column)', [
+                    ':row' => $existingBlock['row'],
+                    ':column' => $existingBlock['column']
+                ]);
+
                 $db->query('DELETE FROM blocks WHERE row = :row AND column = :column', [
                     ':row' => $existingBlock['row'],
                     ':column' => $existingBlock['column']
