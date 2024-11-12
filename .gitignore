@@ -28,3 +28,4 @@ yarn-error.log*
 .idea/vcs.xml
 backend/blocks.db
 backend/blocks.db
+/frontend/node_modules
