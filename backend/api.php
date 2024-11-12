@@ -30,6 +30,8 @@ function saveDataToDatabase($db, $fields) {
         foreach ($fields as $rowIndex => $row) {
             foreach ($row as $columnIndex => $block) {
                 $blocksInRequest[] = ['row' => $rowIndex, 'column' => $columnIndex];
+                // print_r($block);
+                $blockNumber = $block['number'];
 
                 $existingBlock = $db->query('SELECT id_block FROM blocks WHERE row = :row AND column = :column', [
                     ':row' => $rowIndex,
@@ -38,17 +40,19 @@ function saveDataToDatabase($db, $fields) {
 
                 if ($existingBlock) {
                     $existingBlockIds[] = $existingBlock['id_block'];
-                    $db->query('UPDATE blocks SET content = :content WHERE row = :row AND column = :column', [
+                    $db->query('UPDATE blocks SET content = :content, blockNumber = :blockNumber WHERE row = :row AND column = :column', [
                         ':content'=> $block['content'],
                         ':row' => $rowIndex, 
-                        ':column' => $columnIndex
+                        ':column' => $columnIndex,
+                        ':blockNumber'=> $blockNumber
                     ]);
                     $idBlock = $existingBlock['id_block'];
                 } else {
-                    $db->query('INSERT INTO blocks (content, row, column) VALUES (:content, :row, :column)', [
+                    $db->query('INSERT INTO blocks (content, row, column, blockNumber) VALUES (:content, :row, :column, :blockNumber)', [
                         ':content'=> $block['content'],
                         ':row' => $rowIndex, 
-                        ':column' => $columnIndex
+                        ':column' => $columnIndex,
+                        ':blockNumber'=> $blockNumber
                     ]);
                     $idBlock = $db->query('SELECT last_insert_rowid()')->fetchColumn();
                 }
@@ -84,17 +88,18 @@ function saveDataToDatabase($db, $fields) {
 }
 
 function loadDataFromDatabase($db) {
-    $stmt = $db->query('SELECT content, row, column FROM blocks');
+    $stmt = $db->query('SELECT content, row, column, blockNumber FROM blocks');
     $blocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $fields = [];
     foreach ($blocks as $block) {
+        // print_r($block);
         if (!isset($fields[$block['row']])) {
             $fields[$block['row']] = [];
         }
         $fields[$block['row']][$block['column']] = [
             'content' => $block['content'],
-            'number' => $block['column']
+            'number' => $block['blockNumber']
         ];
     }
     return array_values(array_filter($fields, fn($field) => !empty($field)));

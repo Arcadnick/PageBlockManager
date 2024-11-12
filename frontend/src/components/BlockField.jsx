@@ -9,7 +9,8 @@ const BlockField = ({
   canAddRight,
   moveBlock,
   rowIndex,
-  onBlockClick
+  onBlockClick,
+  selectedBlock
 }) => {
   return (
     <div className='block-field-container'>
@@ -25,6 +26,7 @@ const BlockField = ({
               moveBlock={moveBlock} 
               onRemove={() => onRemoveBlock(blockIndex)}
               onClick={() => onBlockClick(blockIndex)}
+              isSelected={selectedBlock?.rowIndex === rowIndex && selectedBlock?.blockIndex === blockIndex}
             />
           );
         })}

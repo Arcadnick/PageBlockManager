@@ -37,6 +37,8 @@ const loadFromDatabase = async () => {
 
       if (Array.isArray(data) && data.length > 0) {
         setFields(data);
+        const maxNumber = data.flat().reduce((max, block) => Math.max(max, block.number), 0);
+        blockCounter.current = maxNumber + 1;
       } else {
         alert("Данные не найдены в базе. Блоки останутся без изменений.");
         console.error("No data found in the database.");
@@ -92,9 +94,6 @@ const loadFromDatabase = async () => {
 
   const handleBlockClick = (rowIndex, blockIndex) => {
     const row = fields[rowIndex];
-    console.log(row);
-    console.log(blockIndex);
-    console.log(row[blockIndex]);
     const block = row ? row[blockIndex] : null;
   
     if (block) {
@@ -146,6 +145,7 @@ const loadFromDatabase = async () => {
               moveBlock={moveBlock}
               rowIndex={rowIndex} 
               onBlockClick={(blockIndex) => handleBlockClick(rowIndex, blockIndex)}
+              selectedBlock={selectedBlock}
             />
           ))}
         </div>

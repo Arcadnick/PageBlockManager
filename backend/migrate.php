@@ -9,6 +9,7 @@ $db->query("
         content VARCHAR,
         column INTEGER,
         row INTEGER,
+        blockNumber INTEGER,
         UNIQUE(id_block)
     )
 ");
